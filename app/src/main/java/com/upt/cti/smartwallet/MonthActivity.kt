@@ -21,19 +21,23 @@ class MonthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_month)
 
+        var month = intent.getStringExtra("month").toString()
+
         var incomeText = findViewById<EditText>(R.id.incomeText)
         var expensesText = findViewById<EditText>(R.id.expensesText)
         var monthText = findViewById<TextView>(R.id.monthText)
 
+        monthText.text = month
+
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
-        db.child("January").get().addOnSuccessListener {
+        db.child(month).get().addOnSuccessListener {
             if(it.exists()){
                 incomeText.setText(it.child("income").value.toString())
             } else
                 Toast.makeText(this, "Retrieving failed", Toast.LENGTH_SHORT).show()
         }
 
-        db.child("January").get().addOnSuccessListener {
+        db.child(month).get().addOnSuccessListener {
             if(it.exists()){
                 expensesText.setText(it.child("expenses").value.toString())
             } else

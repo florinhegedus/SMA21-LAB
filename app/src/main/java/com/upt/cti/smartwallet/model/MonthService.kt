@@ -28,35 +28,6 @@ class MonthService {
             db.child("October").setValue(MonthlyExpenses("October", 0f, 0f))
             db.child("November").setValue(MonthlyExpenses("November", 0f, 0f))
             db.child("December").setValue(MonthlyExpenses("December", 0f, 0f))
-
-            db.addValueEventListener(getData)
-            db.addListenerForSingleValueEvent(getData)
-        }
-        var getData = object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                var sb = StringBuilder()
-                for(i in snapshot.children){
-                    var income = i.child("income").getValue()
-                    var expense = i.child("expense").getValue()
-                    sb.append("${i.key} $income $expense")
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-        }
-
-        fun getIncome(monthName: String): String{
-            var retIncome = "wow"
-            db.child(monthName).get().addOnSuccessListener {
-                if(it.exists()){
-                    val income = it.child("income").value
-                    retIncome = income.toString()
-                } else
-                    retIncome = "no_income"
-            }
-            return retIncome
         }
     }
 
