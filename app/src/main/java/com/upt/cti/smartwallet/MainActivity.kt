@@ -1,22 +1,23 @@
 package com.upt.cti.smartwallet
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
+import com.upt.cti.smartwallet.model.MonthService
 import com.upt.cti.smartwallet.model.MonthlyExpenses
 import org.w3c.dom.Text
+import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
-        db.setValue("12345678")
+        
+        MonthService.init()
 
         val src = findViewById<Button>(R.id.searchButton)
         src.setOnClickListener{
@@ -25,7 +26,8 @@ class MainActivity : AppCompatActivity() {
             val srcMonth = findViewById<EditText>(R.id.monthName)
             var searchMonth = srcMonth.text.toString()
 
-            db.child(searchMonth).setValue(MonthlyExpenses(searchMonth, 1f, 2f))
+            val intent = Intent(this, MonthActivity::class.java)
+            startActivity(intent)
         }
 
     }
