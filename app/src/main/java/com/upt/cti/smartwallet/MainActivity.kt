@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        MonthService.init()
+        //MonthService.init()
 
         val src = findViewById<Button>(R.id.searchButton)
         src.setOnClickListener{

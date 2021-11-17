@@ -3,6 +3,7 @@ package com.upt.cti.smartwallet
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -33,12 +34,6 @@ class MonthActivity : AppCompatActivity() {
         db.child(month).get().addOnSuccessListener {
             if(it.exists()){
                 incomeText.setText(it.child("income").value.toString())
-            } else
-                Toast.makeText(this, "Retrieving failed", Toast.LENGTH_SHORT).show()
-        }
-
-        db.child(month).get().addOnSuccessListener {
-            if(it.exists()){
                 expensesText.setText(it.child("expenses").value.toString())
             } else
                 Toast.makeText(this, "Retrieving failed", Toast.LENGTH_SHORT).show()
@@ -46,10 +41,27 @@ class MonthActivity : AppCompatActivity() {
 
         val button = findViewById<Button>(R.id.saveButton)
         button.setOnClickListener{
+            val income = incomeText.text.toString()
+            val expenses = expensesText.text.toString()
+
+            updateData(month, income, expenses)
 
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
 
+    }
+
+    private fun updateData(month: String, income: String, expenses: String) {
+        val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
+        val map = mapOf<String, Float>(
+            "income" to income.toFloat(),
+            "expenses" to expenses.toFloat()
+        )
+        db.child(month).updateChildren(map).addOnSuccessListener {
+
+        }.addOnFailureListener{
+            Log.d("Failure", "Failure")
+        }
     }
 }

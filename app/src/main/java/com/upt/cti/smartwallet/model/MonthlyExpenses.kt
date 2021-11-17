@@ -10,4 +10,9 @@ class MonthlyExpenses {
         this.income = income
         this.expenses = expenses
     }
+
+    constructor(income: Float, expenses: Float){
+        this.income = income
+        this.expenses = expenses
+    }
 }

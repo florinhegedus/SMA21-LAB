@@ -15,19 +15,12 @@ class MonthService {
         fun init() {
 
             db.setValue("Monthly Expenses")
-
-            db.child("January").setValue(MonthlyExpenses("January", 1000f, 2000f))
-            db.child("February").setValue(MonthlyExpenses("February", 0f, 0f))
-            db.child("March").setValue(MonthlyExpenses("March", 0f, 0f))
-            db.child("April").setValue(MonthlyExpenses("April", 0f, 0f))
-            db.child("May").setValue(MonthlyExpenses("May", 0f, 0f))
-            db.child("June").setValue(MonthlyExpenses("June", 0f, 0f))
-            db.child("July").setValue(MonthlyExpenses("July", 0f, 0f))
-            db.child("August").setValue(MonthlyExpenses("August", 0f, 0f))
-            db.child("September").setValue(MonthlyExpenses("September", 0f, 0f))
-            db.child("October").setValue(MonthlyExpenses("October", 0f, 0f))
-            db.child("November").setValue(MonthlyExpenses("November", 0f, 0f))
-            db.child("December").setValue(MonthlyExpenses("December", 0f, 0f))
+            val jan = MonthlyExpenses("January", 0f, 0f)
+            db.child(jan.month).setValue(mapOf<String, Float>("income" to jan.income, "expenses" to jan.expenses))
+            val feb = MonthlyExpenses("February", 0f, 0f)
+            db.child(feb.month).setValue(mapOf<String, Float>("income" to feb.income, "expenses" to feb.expenses))
+            val mar = MonthlyExpenses("March", 0f, 0f)
+            db.child(mar.month).setValue(mapOf<String, Float>("income" to mar.income, "expenses" to mar.expenses))
         }
     }
 
