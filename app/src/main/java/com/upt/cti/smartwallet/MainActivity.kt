@@ -19,8 +19,8 @@ class MainActivity : AppCompatActivity() {
 
         //MonthService.init()
 
-        val src = findViewById<Button>(R.id.searchButton)
-        src.setOnClickListener{
+        val addButton = findViewById<Button>(R.id.addMonthButton)
+        addButton.setOnClickListener{
             Toast.makeText(this, "Searching", Toast.LENGTH_SHORT).show()
 
             val srcMonth = findViewById<EditText>(R.id.monthName)
@@ -31,18 +31,13 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         val spinner: Spinner = findViewById(R.id.spinner)
-        val arraySpinner = getMonthsFromDB()
-        val arrayAdapter = ArrayAdapter<String>(applicationContext, android.R.layout.simple_spinner_item, arraySpinner)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = arrayAdapter
-
+        var month = ""
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
 
                 Toast.makeText(applicationContext, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show()
-
+                month = parent.getItemAtPosition(position).toString()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -50,30 +45,33 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val srcButton = findViewById<Button>(R.id.searchButton)
+        srcButton.setOnClickListener {
+            val intent = Intent(this, MonthActivity::class.java)
+            intent.putExtra("month", month)
+            startActivity(intent)
+        }
 
-    }
-
-    private fun getMonthsFromDB(): ArrayList<String>{
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
-        var months: ArrayList<String> = ArrayList()
-        db.child("calendar").addValueEventListener( object :
+        db.child("calendar").addListenerForSingleValueEvent( object :
             ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
+                var months = ArrayList<String>()
                 for (postSnapshot in snapshot.children) {
                     val name: String = postSnapshot.getKey().toString()
                     months.add(name)
                 }
+
+                val arrayAdapter = ArrayAdapter<String>(applicationContext, android.R.layout.simple_spinner_item, months)
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinner.adapter = arrayAdapter
             }
         })
-        //months = arrayListOf("")
-        return months
+
 
     }
 
-    private fun getMonthsFromDB2(): ArrayList<String>{
-        return arrayListOf("Ana", "are", "mere")
-    }
 }
