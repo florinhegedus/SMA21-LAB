@@ -31,12 +31,12 @@ class MonthActivity : AppCompatActivity() {
         monthText.text = month
 
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
-        db.child(month).get().addOnSuccessListener {
+        db.child("calendar").child(month).get().addOnSuccessListener {
             if(it.exists()){
                 incomeText.setText(it.child("income").value.toString())
                 expensesText.setText(it.child("expenses").value.toString())
             } else
-                Toast.makeText(this, "Retrieving failed", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "The item doesn't exist, being added to the database", Toast.LENGTH_SHORT).show()
         }
 
         val button = findViewById<Button>(R.id.saveButton)
@@ -58,7 +58,7 @@ class MonthActivity : AppCompatActivity() {
             "income" to income.toFloat(),
             "expenses" to expenses.toFloat()
         )
-        db.child(month).updateChildren(map).addOnSuccessListener {
+        db.child("calendar").child(month).updateChildren(map).addOnSuccessListener {
 
         }.addOnFailureListener{
             Log.d("Failure", "Failure")

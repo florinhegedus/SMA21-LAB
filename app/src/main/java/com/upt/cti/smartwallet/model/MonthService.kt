@@ -16,11 +16,11 @@ class MonthService {
 
             db.setValue("Monthly Expenses")
             val jan = MonthlyExpenses("January", 0f, 0f)
-            db.child(jan.month).setValue(mapOf<String, Float>("income" to jan.income, "expenses" to jan.expenses))
+            db.child("calendar").child(jan.month).setValue(mapOf<String, Float>("income" to jan.income, "expenses" to jan.expenses))
             val feb = MonthlyExpenses("February", 0f, 0f)
-            db.child(feb.month).setValue(mapOf<String, Float>("income" to feb.income, "expenses" to feb.expenses))
+            db.child("calendar").child(feb.month).setValue(mapOf<String, Float>("income" to feb.income, "expenses" to feb.expenses))
             val mar = MonthlyExpenses("March", 0f, 0f)
-            db.child(mar.month).setValue(mapOf<String, Float>("income" to mar.income, "expenses" to mar.expenses))
+            db.child("calendar").child(mar.month).setValue(mapOf<String, Float>("income" to mar.income, "expenses" to mar.expenses))
         }
     }
 

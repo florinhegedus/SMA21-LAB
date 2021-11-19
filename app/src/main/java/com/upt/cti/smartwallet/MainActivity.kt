@@ -3,9 +3,7 @@ package com.upt.cti.smartwallet
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import com.google.firebase.database.*
 import com.upt.cti.smartwallet.model.MonthService
 import com.upt.cti.smartwallet.model.MonthlyExpenses
@@ -30,6 +28,32 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("month", searchMonth)
             startActivity(intent)
         }
+
+
+        val spinner: Spinner = findViewById(R.id.spinner)
+        val arraySpinner = getMonthsFromDB()
+        val arrayAdapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, arraySpinner)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner!!.setAdapter(arrayAdapter)
+
+    }
+
+    fun getMonthsFromDB(): ArrayList<String>{
+        val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
+        val months: ArrayList<String> = ArrayList<String>()
+        db.child("calendar").addValueEventListener( object :
+            ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (postSnapshot in snapshot.children) {
+                    val name: String = postSnapshot.getKey().toString()
+                    months.add(name)
+                }
+            }
+        })
+        return months
 
     }
 }
