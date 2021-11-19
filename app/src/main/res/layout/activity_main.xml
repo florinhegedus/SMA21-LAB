@@ -46,7 +46,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="53dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="142dp"
         android:layout_marginBottom="17dp"
         android:text="Select month"
