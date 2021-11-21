@@ -8,14 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.upt.cti.smartwallet.model.MonthService
-import org.w3c.dom.Text
-import java.lang.StringBuilder
-import java.time.Month
 
 class MonthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

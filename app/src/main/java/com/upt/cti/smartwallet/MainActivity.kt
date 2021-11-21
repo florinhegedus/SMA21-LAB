@@ -1,16 +1,11 @@
 package com.upt.cti.smartwallet
 
-import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import com.google.firebase.database.*
-import com.upt.cti.smartwallet.model.MonthService
-import com.upt.cti.smartwallet.model.MonthlyExpenses
-import org.w3c.dom.Text
-import java.lang.StringBuilder
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
