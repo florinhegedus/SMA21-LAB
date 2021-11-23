@@ -9,6 +9,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.upt.cti.smartwallet.model.FirebaseHelper
+import com.upt.cti.smartwallet.model.PaymentType
+import com.upt.cti.smartwallet.ui.PaymentAdapter
 
 class LauncherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,9 +19,7 @@ class LauncherActivity : AppCompatActivity() {
 
         //FirebaseHelper.init()
         var listView = findViewById<ListView>(R.id.listview)
-
-        val listItems = arrayOf("Item1", "Item2", "Item3")
-
+        var payments = ArrayList<PaymentType>()
 
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         db.child("smart wallet").addListenerForSingleValueEvent( object :
@@ -28,15 +28,21 @@ class LauncherActivity : AppCompatActivity() {
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                var months = ArrayList<String>()
+
                 for (postSnapshot in snapshot.children) {
-                    val name: String = postSnapshot.getKey().toString()
-                    months.add(name)
+                    var time: String = postSnapshot.getKey().toString()
+                    var name = postSnapshot.child("name").value.toString()
+                    var type = postSnapshot.child("type").value.toString()
+                    var cost = postSnapshot.child("cost").value.toString().toDouble()
+                    payments.add(PaymentType(time, name, type, cost))
                 }
 
-                val adapter = ArrayAdapter(applicationContext, android.R.layout.simple_list_item_1, months)
+                val adapter = PaymentAdapter(applicationContext, R.layout.item_payment, payments)
                 listView.adapter = adapter
+
             }
         })
+
+
     }
 }
