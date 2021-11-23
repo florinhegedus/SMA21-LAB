@@ -1,6 +1,7 @@
 package com.upt.cti.smartwallet.ui
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,13 +21,17 @@ class PaymentAdapter(context: Context, var resource: Int, var items: ArrayList<P
 
         var titleView: TextView = view.findViewById(R.id.titleText)
         var descriptionView: TextView = view.findViewById(R.id.descriptionText)
+        var dateView: TextView = view.findViewById(R.id.dateText)
+        var costView: TextView = view.findViewById(R.id.costText)
 
 
         var payment: PaymentType = items[position]
 
         titleView.text = payment.name
         descriptionView.text = payment.type
-
+        titleView.setBackgroundColor(payment.getColorFromPaymentType())
+        dateView.text = "Date: " + payment.time
+        costView.text = "Cost: " + payment.cost.toString()
 
         return view
     }

@@ -15,17 +15,11 @@ class PaymentType {
         this.cost = cost
     }
 
-    fun getColorFromPaymentType(type: String): Int {
-        var type = type
-        type = type.toLowerCase()
-        return if (type == "entertainment") Color.rgb(
-            200,
-            50,
-            50
-        ) else if (type == "food") Color.rgb(50, 150, 50) else if (type == "taxes") Color.rgb(
-            20,
-            20,
-            150
-        ) else if (type == "travel") Color.rgb(230, 140, 0) else Color.rgb(100, 100, 100)
+    fun getColorFromPaymentType(): Int {
+        return if (this.type == "entertainment") Color.rgb(200, 50, 50)
+        else if (this.type == "food") Color.rgb(50, 150, 50)
+        else if (this.type == "taxes") Color.rgb(20, 20, 150)
+        else if (this.type == "travel") Color.rgb(230, 140, 0)
+        else Color.rgb(100, 100, 100)
     }
 }
