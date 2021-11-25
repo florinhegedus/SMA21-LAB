@@ -1,9 +1,10 @@
 package com.upt.cti.smartwallet
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.widget.*
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -42,6 +43,13 @@ class LauncherActivity : AppCompatActivity() {
 
             }
         })
+
+        val addButton = findViewById<FloatingActionButton>(R.id.addButton)
+        addButton.setOnClickListener{
+            val intent = Intent(this, AddPaymentActivity::class.java)
+            //intent.putExtra("month", searchMonth)
+            startActivity(intent)
+        }
 
 
     }
