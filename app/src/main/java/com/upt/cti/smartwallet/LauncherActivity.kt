@@ -47,7 +47,15 @@ class LauncherActivity : AppCompatActivity() {
         val addButton = findViewById<FloatingActionButton>(R.id.addButton)
         addButton.setOnClickListener{
             val intent = Intent(this, AddPaymentActivity::class.java)
+            intent.putExtra("date", "new item")
+            startActivity(intent)
+        }
 
+        listView.setOnItemClickListener { parent, view, position, id ->
+            val element = parent.getItemAtPosition(position) // The item that was clicked
+            val intent = Intent(this, AddPaymentActivity::class.java)
+            val date = view.findViewById<TextView>(R.id.dateText).text.toString()
+            intent.putExtra("date", date)
             startActivity(intent)
         }
 

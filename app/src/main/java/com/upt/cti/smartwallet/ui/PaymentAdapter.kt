@@ -30,7 +30,7 @@ class PaymentAdapter(context: Context, var resource: Int, var items: ArrayList<P
         titleView.text = payment.name
         descriptionView.text = payment.type
         titleView.setBackgroundColor(payment.getColorFromPaymentType())
-        dateView.text = "Date: " + payment.time
+        dateView.text = payment.time
         costView.text = "Cost: " + payment.cost.toString()
 
         return view

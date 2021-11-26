@@ -14,6 +14,10 @@ class AddPaymentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_payment)
+        var date = intent.getStringExtra("date").toString()
+
+        var descriptionText = findViewById<EditText>(R.id.descriptionView)
+        var costText = findViewById<EditText>(R.id.costView)
 
         val spinner: Spinner = findViewById(R.id.spinner)
         val values = arrayOf("entertainment", "food", "taxes", "travel")
@@ -22,9 +26,12 @@ class AddPaymentActivity : AppCompatActivity() {
         spinner.adapter = arrayAdapter
         var selection = ""
 
+        if(date != "new item"){
+            Toast.makeText(applicationContext, date, Toast.LENGTH_SHORT).show()
+        }
+
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                Toast.makeText(applicationContext, parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show()
                 selection = parent.getItemAtPosition(position).toString()
             }
 
@@ -35,26 +42,57 @@ class AddPaymentActivity : AppCompatActivity() {
 
         val saveButton = findViewById<Button>(R.id.saveButton)
         saveButton.setOnClickListener{
-            var descriptionText = findViewById<EditText>(R.id.descriptionView)
-            var costText = findViewById<EditText>(R.id.costView)
             var name = ""
             var cost = 0.0
             name = descriptionText.text.toString()
             if(costText.text.isNotEmpty())
                 cost = costText.text.toString().toDouble()
-            addPayment(name, selection, cost)
+            if(date=="new item")
+                addPayment(name, selection, cost)
+            else
+                updatePayment(date, name, selection, cost)
 
             val intent = Intent(this, LauncherActivity::class.java)
             startActivity(intent)
         }
+
+        val deleteButton = findViewById<Button>(R.id.deleteButton)
+        deleteButton.setOnClickListener{
+
+            Toast.makeText(applicationContext, date, Toast.LENGTH_SHORT).show()
+            if(date != "new item")
+                deletePayment(date)
+            val intent = Intent(this, LauncherActivity::class.java)
+            startActivity(intent)
+        }
+
+        val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
+        db.child("smart wallet").child(date).get().addOnSuccessListener {
+            if(it.exists()){
+                descriptionText.setText(it.child("name").value.toString())
+                costText.setText(it.child("cost").value.toString())
+                spinner.setSelection(arrayAdapter.getPosition(it.child("type").value.toString()))
+                Toast.makeText(applicationContext, "Retrieved from firebase", Toast.LENGTH_SHORT).show()
+            } else
+                Toast.makeText(this, "Cant retrieve from firebase", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun updatePayment(date: String, name: String, type: String, cost: Double) {
+        val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
+        val payment1 = PaymentType(date, name, type, cost)
+        db.child("smart wallet").child(payment1.time).setValue(mapOf("name" to payment1.name, "cost" to payment1.cost, "type" to payment1.type))
     }
 
     private fun addPayment(name: String, type: String, cost: Double) {
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         val payment1 = PaymentType(getTime(), name, type, cost)
-        Toast.makeText(applicationContext, getTime(), Toast.LENGTH_SHORT).show()
-
         db.child("smart wallet").child(payment1.time).setValue(mapOf("name" to payment1.name, "cost" to payment1.cost, "type" to payment1.type))
+    }
+
+    private fun deletePayment(date: String){
+        val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
+        db.child("smart wallet").child(date).removeValue()
     }
 
     private fun getTime(): String {
