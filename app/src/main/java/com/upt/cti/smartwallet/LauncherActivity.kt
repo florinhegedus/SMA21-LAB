@@ -47,7 +47,7 @@ class LauncherActivity : AppCompatActivity() {
         val addButton = findViewById<FloatingActionButton>(R.id.addButton)
         addButton.setOnClickListener{
             val intent = Intent(this, AddPaymentActivity::class.java)
-            //intent.putExtra("month", searchMonth)
+
             startActivity(intent)
         }
 
