@@ -1,8 +1,9 @@
 package com.upt.cti.smartwallet.model
 
 import android.graphics.Color
+import java.io.Serializable
 
-class Payment {
+class Payment: Serializable {
     var time: String = ""
     var name: String = ""
     var type: String = ""
@@ -22,4 +23,5 @@ class Payment {
         else if (this.type == "travel") Color.rgb(230, 140, 0)
         else Color.rgb(100, 100, 100)
     }
+
 }
