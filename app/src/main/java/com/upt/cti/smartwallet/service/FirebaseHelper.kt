@@ -1,6 +1,8 @@
-package com.upt.cti.smartwallet.model
+package com.upt.cti.smartwallet.service
 
 import com.google.firebase.database.FirebaseDatabase
+import com.upt.cti.smartwallet.model.MonthlyExpenses
+import com.upt.cti.smartwallet.model.Payment
 
 class FirebaseHelper {
 

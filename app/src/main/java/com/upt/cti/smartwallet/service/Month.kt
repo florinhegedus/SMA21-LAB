@@ -1,4 +1,4 @@
-package com.upt.cti.smartwallet.model
+package com.upt.cti.smartwallet.service
 
 import java.text.SimpleDateFormat
 import java.util.*

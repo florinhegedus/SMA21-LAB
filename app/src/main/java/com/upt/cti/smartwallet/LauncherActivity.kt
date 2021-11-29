@@ -9,12 +9,9 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
-import com.upt.cti.smartwallet.model.Month
+import com.upt.cti.smartwallet.service.Month
 import com.upt.cti.smartwallet.model.Payment
 import com.upt.cti.smartwallet.ui.PaymentAdapter
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class LauncherActivity : AppCompatActivity() {
