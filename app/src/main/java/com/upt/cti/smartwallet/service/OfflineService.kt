@@ -80,9 +80,38 @@ object OfflineService {
     }
 
     private fun isValid(dateStr: String): Boolean {
-        if(dateStr.startsWith("2021"))
+        if(dateStr.matches("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}".toRegex()))
             return true
         return false
+    }
+
+    public fun deleteAllFiles(context: Context){
+        try{
+            val path = context.filesDir
+            for(file in path.listFiles()){
+                if(isValid(file.name)) {
+                    val fis = context.openFileInput(file.name)
+                    val ins = ObjectInputStream(fis)
+                    val payment: Payment = ins.readObject() as Payment
+                    updateLocalBackup(context, payment, false)
+                    ins.close()
+                    fis.close()
+                }
+            }
+        } catch(e: IOException){
+            Toast.makeText(context, "Cannot access local data (loadAllPaymentsFromFile)", Toast.LENGTH_SHORT).show()
+        } catch(e: ClassNotFoundException){
+            e.printStackTrace()
+        }
+
+    }
+
+    public fun addAllFiles(context: Context, payments: ArrayList<Payment>){
+        val path = context.filesDir
+        for(payment in payments){
+            updateLocalBackup(context, payment, true)
+        }
+
     }
 
 }

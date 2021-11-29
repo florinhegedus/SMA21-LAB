@@ -33,7 +33,7 @@ class LauncherActivity : AppCompatActivity() {
         val smartwallet = db.child("smart wallet")
         smartwallet.keepSynced(true)
 
-
+        //OfflineService.deleteAllFiles(applicationContext)
         db.child("smart wallet").addListenerForSingleValueEvent( object :
             ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -48,7 +48,7 @@ class LauncherActivity : AppCompatActivity() {
                     var cost = postSnapshot.child("cost").value.toString().toDouble()
                     if(Integer.parseInt(time.substring(5, 7))==cMonth)
                         payments.add(Payment(time, name, type, cost))
-                    OfflineService.updateLocalBackup(applicationContext, Payment(time, name, type, cost), true)
+
                 }
 
                 val adapter = PaymentAdapter(applicationContext, R.layout.item_payment, payments)

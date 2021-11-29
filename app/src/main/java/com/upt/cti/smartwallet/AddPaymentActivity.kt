@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.*
 import com.google.firebase.database.FirebaseDatabase
 import com.upt.cti.smartwallet.model.Payment
+import com.upt.cti.smartwallet.service.OfflineService
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -76,17 +77,21 @@ class AddPaymentActivity : AppCompatActivity() {
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         val payment1 = Payment(date, name, type, cost)
         db.child("smart wallet").child(payment1.time).setValue(mapOf("name" to payment1.name, "cost" to payment1.cost, "type" to payment1.type))
+        OfflineService.updateLocalBackup(applicationContext, payment1, false)
+        OfflineService.updateLocalBackup(applicationContext, payment1, true)
     }
 
     private fun addPayment(name: String, type: String, cost: Double) {
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         val payment1 = Payment(getTime(), name, type, cost)
         db.child("smart wallet").child(payment1.time).setValue(mapOf("name" to payment1.name, "cost" to payment1.cost, "type" to payment1.type))
+        OfflineService.updateLocalBackup(applicationContext, payment1, true)
     }
 
     private fun deletePayment(date: String){
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         db.child("smart wallet").child(date).removeValue()
+        OfflineService.updateLocalBackup(applicationContext, Payment(date, "", "", 0.0), true)
     }
 
     private fun getTime(): String {
