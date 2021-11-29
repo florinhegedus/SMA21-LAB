@@ -50,8 +50,7 @@ class LauncherActivity : AppCompatActivity() {
                         payments.add(Payment(time, name, type, cost))
 
                 }
-                OfflineService.deleteAllFiles(applicationContext)
-                OfflineService.addAllFiles(applicationContext, payments)
+
                 val adapter = PaymentAdapter(applicationContext, R.layout.item_payment, payments)
                 listView.adapter = adapter
 
@@ -64,6 +63,9 @@ class LauncherActivity : AppCompatActivity() {
                 val adapter = PaymentAdapter(applicationContext, R.layout.item_payment, payments)
                 listView.adapter = adapter
             }
+        } else {
+            OfflineService.deleteAllFiles(applicationContext)
+            OfflineService.addAllFiles(applicationContext, payments)
         }
 
         val addButton = findViewById<FloatingActionButton>(R.id.addButton)
