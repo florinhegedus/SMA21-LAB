@@ -9,6 +9,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import com.upt.cti.smartwallet.model.Month
 import com.upt.cti.smartwallet.model.Payment
 import com.upt.cti.smartwallet.ui.PaymentAdapter
@@ -29,6 +30,11 @@ class LauncherActivity : AppCompatActivity() {
         monthTitle.text = Month.monthToString(cMonth)
 
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        val smartwallet = db.child("smart wallet")
+        smartwallet.keepSynced(true)
+
+
         db.child("smart wallet").addListenerForSingleValueEvent( object :
             ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
