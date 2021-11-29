@@ -50,7 +50,8 @@ class LauncherActivity : AppCompatActivity() {
                         payments.add(Payment(time, name, type, cost))
 
                 }
-
+                OfflineService.deleteAllFiles(applicationContext)
+                OfflineService.addAllFiles(applicationContext, payments)
                 val adapter = PaymentAdapter(applicationContext, R.layout.item_payment, payments)
                 listView.adapter = adapter
 
@@ -91,6 +92,5 @@ class LauncherActivity : AppCompatActivity() {
             Month.decrementMonth()
             recreate()
         }
-        //persistence
     }
 }
