@@ -3,6 +3,7 @@ package com.upt.cti.smartwallet
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.database.DataSnapshot
@@ -11,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.upt.cti.smartwallet.service.Month
 import com.upt.cti.smartwallet.model.Payment
+import com.upt.cti.smartwallet.service.OfflineService
 import com.upt.cti.smartwallet.ui.PaymentAdapter
 import kotlin.collections.ArrayList
 
@@ -46,6 +48,7 @@ class LauncherActivity : AppCompatActivity() {
                     var cost = postSnapshot.child("cost").value.toString().toDouble()
                     if(Integer.parseInt(time.substring(5, 7))==cMonth)
                         payments.add(Payment(time, name, type, cost))
+                    OfflineService.updateLocalBackup(applicationContext, Payment(time, name, type, cost), true)
                 }
 
                 val adapter = PaymentAdapter(applicationContext, R.layout.item_payment, payments)
@@ -53,6 +56,14 @@ class LauncherActivity : AppCompatActivity() {
 
             }
         })
+
+        if(!OfflineService.isNetworkAvailable(applicationContext)){
+            if(OfflineService.hasLocalStorage(applicationContext)) {
+                payments = OfflineService.loadPaymentsFromFile(applicationContext, cMonth)
+                val adapter = PaymentAdapter(applicationContext, R.layout.item_payment, payments)
+                listView.adapter = adapter
+            }
+        }
 
         val addButton = findViewById<FloatingActionButton>(R.id.addButton)
         addButton.setOnClickListener{
