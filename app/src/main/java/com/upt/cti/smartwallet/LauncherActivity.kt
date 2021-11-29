@@ -25,6 +25,8 @@ class LauncherActivity : AppCompatActivity() {
         var payments = ArrayList<Payment>()
 
         var cMonth = Month.cMonth
+        val monthTitle = findViewById<TextView>(R.id.monthTextView)
+        monthTitle.text = Month.monthToString(cMonth)
 
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         db.child("smart wallet").addListenerForSingleValueEvent( object :
