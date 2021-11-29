@@ -9,18 +9,22 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.upt.cti.smartwallet.model.FirebaseHelper
-import com.upt.cti.smartwallet.model.PaymentType
+import com.upt.cti.smartwallet.model.Month
+import com.upt.cti.smartwallet.model.Payment
 import com.upt.cti.smartwallet.ui.PaymentAdapter
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class LauncherActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launcher)
 
-        //FirebaseHelper.init()
         var listView = findViewById<ListView>(R.id.listview)
-        var payments = ArrayList<PaymentType>()
+        var payments = ArrayList<Payment>()
+
+        var cMonth = Month.cMonth
 
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         db.child("smart wallet").addListenerForSingleValueEvent( object :
@@ -31,11 +35,12 @@ class LauncherActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for (postSnapshot in snapshot.children) {
-                    var time: String = postSnapshot.getKey().toString()
+                    var time: String = postSnapshot.key.toString()
                     var name = postSnapshot.child("name").value.toString()
                     var type = postSnapshot.child("type").value.toString()
                     var cost = postSnapshot.child("cost").value.toString().toDouble()
-                    payments.add(PaymentType(time, name, type, cost))
+                    if(Integer.parseInt(time.substring(5, 7))==cMonth)
+                        payments.add(Payment(time, name, type, cost))
                 }
 
                 val adapter = PaymentAdapter(applicationContext, R.layout.item_payment, payments)
@@ -59,6 +64,17 @@ class LauncherActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val nextButton = findViewById<Button>(R.id.nextButton)
+        nextButton.setOnClickListener{
+            Month.incrementMonth()
+            recreate()
+        }
+
+        val prevButton = findViewById<Button>(R.id.prevButton)
+        prevButton.setOnClickListener{
+            Month.decrementMonth()
+            recreate()
+        }
 
     }
 }

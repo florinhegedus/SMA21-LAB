@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import com.google.firebase.database.FirebaseDatabase
-import com.upt.cti.smartwallet.model.PaymentType
+import com.upt.cti.smartwallet.model.Payment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,10 +25,6 @@ class AddPaymentActivity : AppCompatActivity() {
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = arrayAdapter
         var selection = ""
-
-        if(date != "new item"){
-            Toast.makeText(applicationContext, date, Toast.LENGTH_SHORT).show()
-        }
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
@@ -58,8 +54,6 @@ class AddPaymentActivity : AppCompatActivity() {
 
         val deleteButton = findViewById<Button>(R.id.deleteButton)
         deleteButton.setOnClickListener{
-
-            Toast.makeText(applicationContext, date, Toast.LENGTH_SHORT).show()
             if(date != "new item")
                 deletePayment(date)
             val intent = Intent(this, LauncherActivity::class.java)
@@ -80,13 +74,13 @@ class AddPaymentActivity : AppCompatActivity() {
 
     private fun updatePayment(date: String, name: String, type: String, cost: Double) {
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
-        val payment1 = PaymentType(date, name, type, cost)
+        val payment1 = Payment(date, name, type, cost)
         db.child("smart wallet").child(payment1.time).setValue(mapOf("name" to payment1.name, "cost" to payment1.cost, "type" to payment1.type))
     }
 
     private fun addPayment(name: String, type: String, cost: Double) {
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
-        val payment1 = PaymentType(getTime(), name, type, cost)
+        val payment1 = Payment(getTime(), name, type, cost)
         db.child("smart wallet").child(payment1.time).setValue(mapOf("name" to payment1.name, "cost" to payment1.cost, "type" to payment1.type))
     }
 

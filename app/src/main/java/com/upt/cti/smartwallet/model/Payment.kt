@@ -2,7 +2,7 @@ package com.upt.cti.smartwallet.model
 
 import android.graphics.Color
 
-class PaymentType {
+class Payment {
     var time: String = ""
     var name: String = ""
     var type: String = ""
