@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "606229041257-ia7htovt8tqe9jilks8mb389vrefm0k9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.upt.cti.smartwallet",
-            "certificate_hash": "b64e1e10df3c9314b234b4c48d76a1cdc1be5655"
-          }
-        },
-        {
           "client_id": "606229041257-5tkcu0g92dvo20e6v40hkmm5hq2ghjd3.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -9,21 +9,20 @@
     <Button
         android:id="@+id/signInButton"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="58dp"
         android:layout_marginStart="44dp"
         android:layout_marginEnd="13dp"
         android:text="Sign In"
-        app:layout_constraintBottom_toBottomOf="@+id/registerButton"
+        app:layout_constraintBaseline_toBaselineOf="@+id/registerButton"
         app:layout_constraintEnd_toStartOf="@+id/registerButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/registerButton" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="43dp"
-        android:layout_marginBottom="283dp"
+        android:layout_marginBottom="282dp"
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,15 +34,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="41dp"
-        android:layout_marginTop="194dp"
         android:layout_marginEnd="41dp"
-        android:layout_marginBottom="206dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/googleButton"
+        app:layout_constraintBottom_toTopOf="@+id/passwordText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <EditText
         android:id="@+id/passwordView"
@@ -74,22 +71,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginTop="174dp"
+        android:layout_marginBottom="1dp"
         android:text="Email"
         app:layout_constraintBottom_toTopOf="@+id/emailView"
         app:layout_constraintStart_toStartOf="@+id/emailView"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/googleButton"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginEnd="45dp"
-        android:layout_marginBottom="217dp"
-        android:text="Sign in with google"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
