@@ -6,10 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import com.upt.cti.smartwallet.service.Month
 import com.upt.cti.smartwallet.model.Payment
 import com.upt.cti.smartwallet.service.OfflineService
@@ -17,9 +20,17 @@ import com.upt.cti.smartwallet.ui.PaymentAdapter
 import kotlin.collections.ArrayList
 
 class LauncherActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_launcher)
+
+        auth = Firebase.auth
+        val currentUser = auth.currentUser
+        var userView = findViewById<TextView>(R.id.userView)
+        userView.setText("User: " + currentUser?.email.toString())
 
         var listView = findViewById<ListView>(R.id.listview)
         var payments = ArrayList<Payment>()
@@ -27,6 +38,11 @@ class LauncherActivity : AppCompatActivity() {
         var cMonth = Month.cMonth
         val monthTitle = findViewById<TextView>(R.id.monthTextView)
         monthTitle.text = Month.monthToString(cMonth)
+
+        val signOutButton = findViewById<Button>(R.id.signOutButton)
+        signOutButton.setOnClickListener {
+            signOut()
+        }
 
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -95,4 +111,21 @@ class LauncherActivity : AppCompatActivity() {
             recreate()
         }
     }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if user is signed in (non-null) and update UI accordingly.
+        val currentUser = auth.currentUser
+        if(currentUser == null){
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun signOut(){
+        auth.signOut()
+        val intent = Intent(this, SignUpActivity::class.java)
+        startActivity(intent)
+    }
+
 }
