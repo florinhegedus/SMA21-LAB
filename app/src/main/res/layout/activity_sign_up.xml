@@ -35,13 +35,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="41dp"
+        android:layout_marginTop="194dp"
         android:layout_marginEnd="41dp"
+        android:layout_marginBottom="206dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/passwordText"
+        app:layout_constraintBottom_toTopOf="@+id/googleButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/passwordView"
@@ -76,5 +78,18 @@
         app:layout_constraintBottom_toTopOf="@+id/emailView"
         app:layout_constraintStart_toStartOf="@+id/emailView"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/googleButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="217dp"
+        android:text="Sign in with google"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
