@@ -46,11 +46,11 @@ class LauncherActivity : AppCompatActivity() {
 
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        val smartwallet = db.child("smart wallet")
+        val smartwallet = db.child("smart wallet").child(auth.uid.toString())
         smartwallet.keepSynced(true)
 
         //OfflineService.deleteAllFiles(applicationContext)
-        db.child("smart wallet").addListenerForSingleValueEvent( object :
+        db.child("smart wallet").child(auth.uid.toString()).addListenerForSingleValueEvent( object :
             ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
             }

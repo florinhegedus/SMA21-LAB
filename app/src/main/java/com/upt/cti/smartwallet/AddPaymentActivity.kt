@@ -5,17 +5,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.ktx.Firebase
 import com.upt.cti.smartwallet.model.Payment
 import com.upt.cti.smartwallet.service.OfflineService
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddPaymentActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_payment)
         var date = intent.getStringExtra("date").toString()
+
+        auth = Firebase.auth
+        val currentUser = auth.currentUser
 
         var descriptionText = findViewById<EditText>(R.id.descriptionView)
         var costText = findViewById<EditText>(R.id.costView)
@@ -62,7 +71,7 @@ class AddPaymentActivity : AppCompatActivity() {
         }
 
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
-        db.child("smart wallet").child(date).get().addOnSuccessListener {
+        db.child("smart wallet").child(auth.uid.toString()).child(date).get().addOnSuccessListener {
             if(it.exists()){
                 descriptionText.setText(it.child("name").value.toString())
                 costText.setText(it.child("cost").value.toString())
@@ -76,7 +85,7 @@ class AddPaymentActivity : AppCompatActivity() {
     private fun updatePayment(date: String, name: String, type: String, cost: Double) {
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         val payment1 = Payment(date, name, type, cost)
-        db.child("smart wallet").child(payment1.time).setValue(mapOf("name" to payment1.name, "cost" to payment1.cost, "type" to payment1.type))
+        db.child("smart wallet").child(auth.uid.toString()).child(payment1.time).setValue(mapOf("name" to payment1.name, "cost" to payment1.cost, "type" to payment1.type))
         //OfflineService.updateLocalBackup(applicationContext, payment1, false)
         //OfflineService.updateLocalBackup(applicationContext, payment1, true)
     }
@@ -84,13 +93,13 @@ class AddPaymentActivity : AppCompatActivity() {
     private fun addPayment(name: String, type: String, cost: Double) {
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
         val payment1 = Payment(getTime(), name, type, cost)
-        db.child("smart wallet").child(payment1.time).setValue(mapOf("name" to payment1.name, "cost" to payment1.cost, "type" to payment1.type))
+        db.child("smart wallet").child(auth.uid.toString()).child(payment1.time).setValue(mapOf("name" to payment1.name, "cost" to payment1.cost, "type" to payment1.type))
         //OfflineService.updateLocalBackup(applicationContext, payment1, true)
     }
 
     private fun deletePayment(date: String){
         val db = FirebaseDatabase.getInstance("https://smart-wallet-6240c-default-rtdb.europe-west1.firebasedatabase.app/").reference
-        db.child("smart wallet").child(date).removeValue()
+        db.child("smart wallet").child(auth.uid.toString()).child(date).removeValue()
         //OfflineService.updateLocalBackup(applicationContext, Payment(date, "", "", 0.0), true)
     }
 
